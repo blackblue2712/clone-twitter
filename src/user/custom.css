@@ -1,0 +1,255 @@
+.wlg-size-20 {
+    width: 20%;
+}
+.wlg-size-60 {
+    width: 60%;
+}
+.w-100 {
+    width: 100%;
+}
+
+.bg-151F2B {
+    background: #151F2B;
+}
+
+.border-r-liti {
+    border-radius: 2%;
+}
+.border-r-half {
+    border-radius: 50%;
+}
+label {
+    color: white;
+}
+
+.profile-nav {
+    background: #151F2B;
+    margin-top: 12rem;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0)
+}
+
+.profile-nav .profile-row {
+    /* position: relative; */
+}
+
+.profile-nav .profile-row li {
+    padding: 8px 4px;
+}
+
+    .profile-row .profile-avatar {
+        position: relative;
+    }
+    .profile-row .profile-avatar li {
+        height: 100%;
+    }
+
+    .profile-row .profile-avatart-image {
+        position: absolute;
+        bottom: -20%;
+    }
+
+.profile-nav-link {
+    /* width: 60%; */
+}
+
+    .profile-nav-link li > a {
+        font-weight: bold;
+        color: hsla(0,0%,100%,.5);    
+    }
+    .profile-nav-link li:hover > a {
+        font-weight: bold;
+        color: #1c94e0;  
+    }
+    .profile-nav-link .active a {
+        color: #1c94e0;
+    }
+    .button-show-model-create-post {
+        cursor: pointer;
+    }
+    .button-show-model-create-post:hover {
+        color: blue;
+    }
+
+
+
+.moveavle-module {
+    /* width: 20%; */
+}
+
+
+/* APP CONTENT */
+.app-content {
+    margin-top: 2rem;
+}
+
+/* PRFILE SIDE BAR */
+.profile-sidebar {
+    background: #ccc;
+    height: fit-content;
+
+}
+
+/* PROFILE TIMELINE */
+.profile-timeline {
+    position: relative;
+}
+.profile-timeline:after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: calc(100% - 1.55rem);
+    top: 1.55rem;
+    left: 2.9rem;
+    z-index: 10;
+    background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+    -webkit-animation: Gradient 15s ease infinite;
+	-moz-animation: Gradient 15s ease infinite;
+	animation: Gradient 15s ease infinite
+}
+
+.profile-thumb {
+    z-index: 11;
+    border: 3px solid #51badc;
+}
+.profile-item {
+    /* border: 0.5px solid #38444D; */
+    
+}
+.profile-item:hover {
+    background-color: #101922;    
+}
+
+    .profile-item-header {
+        padding: 4px 0px;
+    }
+    .profile-item-name {
+        font-size: 16px;
+        font-weight: 540;
+    }
+
+
+/* EDIT PROFILE */
+legend {
+    width: auto !important;
+}
+#profile-avatart-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+fieldset.scheduler-border {
+    border: 1px solid #38444d !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  1px 1px 3px 2px #23221e;
+            box-shadow:  1px 1px 3px 2px #23221e;
+    position: relative;
+}
+fieldset.scheduler-border i {
+    font-size: 32px;
+    position: absolute;
+    top: 11.2%;
+    left: 66px;
+    opacity: .8;
+}
+fieldset.scheduler-border .button-choose-image {
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-right: -30px;
+}
+fieldset.scheduler-border .button-choose-image:hover {
+    width: 0px !important;
+}
+fieldset.scheduler-border img {
+    border: 4px solid #00c2ff;
+    opacity: .8;
+}
+
+legend.scheduler-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+}
+
+/* REACT */
+.card-react {
+    display: flex;
+}
+.card-react div {
+    margin-right: 10px;
+}
+.card-react label {
+    cursor: pointer;
+}
+
+.icon-like {
+    height: 24px;
+}
+/* .icon-like i {
+    font-size: 20px;
+} */
+.react-like-toggle {
+    outline: none;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.react-like-toggle:hover {
+    color: #E1415E;
+}
+    .favorite {
+        color: #E1415E;
+    }
+
+@media (max-width: 992px) {
+    .wsm-size-40 {
+        width: 40%;
+    }
+    .container {
+        width: 100% !important;
+        margin: 0 1rem;
+    }
+    .wsm-hide {
+        display: none;
+    }
+}
+
+
+@-webkit-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@-moz-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
