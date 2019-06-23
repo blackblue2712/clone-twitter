@@ -101,3 +101,31 @@ export const unlikePost = (postId, userId, token) => {
         body: JSON.stringify({postId, userId})
     });
 }
+
+export const comment = (postId, userId, textComment, token) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/post/comment`, {
+        method: "PUT",
+        headers: {
+            Accept: "Application/json",
+            "Content-Type": "Application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify( {postId, userId, textComment} )
+    })
+    .then( res => res.json() )
+    .catch( error => console.log(error));
+}
+
+export const uncomment = (postId, userId, commentId, token) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/post/uncomment`, {
+        method: "PUT",
+        headers: {
+            Accept: "Application/json",
+            "Content-Type": "Application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify( {postId, userId, commentId} )
+    })
+    .then( res => res.json() )
+    .catch( error => console.log(error));
+}

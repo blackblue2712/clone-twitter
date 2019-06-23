@@ -55,9 +55,10 @@ class EditPost extends Component {
         // Call api edit post in controller
         updatePost(this.postData, postId, token)
         .then( data => {
-            console.log(data)
+            this.setState( {loading: false} );
             if(data.error) console.log(data.error);
             else {
+                
             }
         })
     }

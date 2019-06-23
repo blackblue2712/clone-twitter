@@ -1,60 +1,45 @@
-import React, { Component } from "react";
-import { getPosts } from "../controllers/post";
+import React, { Component } from 'react';
+import Loading from '../components/Loading';
 import { Link } from 'react-router-dom';
-import Loading from "../components/Loading";
-import { isAuthenticated } from '../controllers/auth';
-import ReactPost from "./ReactPost";
+import { getPost } from '../controllers/post';
+import ReactPost from './ReactPost';
 const moment = require("moment");
 
-class Posts extends Component {
+
+class SinglePost extends Component {
     constructor() {
         super();
         this.state = {
-            loading: false,
-            error: '',
-            posts: []
+            loading: true,
+            post: {}
         }
 
     }
 
-
     componentDidMount() {
-        this.setState({
-            loading: true
-        });
-        getPosts()
-        .then(data => {
-            this.setState( {loading: false} );
-            console.log(data)
-            if(data.error) {
-                console.log(data.error);
-            } else {
-                this.setState({
-                    posts: data
-                });
-            }
-        });
-
+        let postId = this.props.match.params.postId;
+        getPost(postId)
+        .then( data => {
+            this.setState({
+                post: data,
+                loading: false
+            })
+        })
     }
 
-    
-
     render() {
-        const { loading, posts } = this.state;
-        
-        
+        const { loading, post } = this.state;
         return (
             <>
-                {loading && <Loading />}
-                <div className="container mt-4">
-                    <div className="row">
-                        <div className="profile-sidebar wlg-size-20 wsm-size-40 mr-4">
-                            <div className="profile-header-card">card</div>
-                        </div>
-                        <div className="home-timeline wlg-size-60">
-                        {
-                            posts.map( (post, index) => {
-                                return <div className="card profile-item w-100 bg-151F2B" key={index}>
+                {
+                    loading ? <Loading /> : 
+                    <div className="container mt-4">
+                        <div className="row">
+                            <div className="profile-sidebar wlg-size-20 wsm-size-40 mr-4">
+                                {/* <div className="profile-header-card">card</div> */}
+                            </div>
+                            <div className="home-timeline wlg-size-60">
+                                <div className="card profile-item w-100 bg-151F2B">
                                     <div className="card-body">
                                         <div className="profile-item-header d-flex align-items-start">
                                             <Link to={`user/${post.postedBy._id}`}>
@@ -75,15 +60,13 @@ class Posts extends Component {
                                         </div>
                                     </div>
                                 </div>
-                            })
-                        }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </>
         )
-        
     }
 }
 
-export default Posts;
+export default SinglePost;

@@ -10,7 +10,7 @@ class Menu extends Component {
     constructor() {
         super();
 
-        this.state ={
+        this.state = {
             username: '',
             photo: '',
             email: '',

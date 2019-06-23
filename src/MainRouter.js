@@ -9,6 +9,7 @@ import Signup from './user/Signup';
 import Profile from './user/Profile';
 import EditProfile from './user/EditProfile';
 import EditPost from './post/EditPost';
+import SinglePost from './post/SinglePost';
 const MainRouter = () => (
     <div className="App">
         <Menu />
@@ -21,6 +22,7 @@ const MainRouter = () => (
             <Route exact path="/user/:userId" component={Profile}></Route>
             <Route exact path="/user/edit/:userId" component={EditProfile}></Route>
 
+            <Route exact path="/post/:postId" component={SinglePost}></Route>
             <Route exact path="/post/edit/:postId" component={EditPost}></Route>
         </Switch>
     </div>

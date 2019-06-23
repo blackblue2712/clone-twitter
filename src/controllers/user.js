@@ -48,5 +48,38 @@ export const updateUser = (userId, token, userData) => {
     });
 }
 
+export const addFollow = (userId, followId, token) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/user/follow`, {
+        method: "PUT",
+        headers: {
+            Accept: "Application/json",
+            "Content-Type": "Application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify( {userId, followId} )
+    })
+    .then( res => {
+        return res.json();
+    })
+    .catch( error => {
+        console.log("ERROR FOLLOW USER");
+    })
+}
 
-
+export const unFollow = (userId, followId, token) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/user/unfollow`, {
+        method: "PUT",
+        headers: {
+            Accept: "Application/json",
+            "Content-Type": "Application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify( {userId, followId} )
+    })
+    .then( res => {
+        return res.json();
+    })
+    .catch( error => {
+        console.log("ERROR UNFOLLOW USER");
+    })
+}

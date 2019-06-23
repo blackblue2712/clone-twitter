@@ -189,7 +189,7 @@ legend.scheduler-border {
 /* .icon-like i {
     font-size: 20px;
 } */
-.react-like-toggle {
+.react-like-toggle, .more-detail-button {
     outline: none;
     border: 0;
     background-color: transparent;

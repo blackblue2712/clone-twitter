@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getUser } from '../controllers/user';
+import { getUser, addFollow, unFollow } from '../controllers/user';
 import { getPostByUser } from '../controllers/post';
 import { isAuthenticated } from '../controllers/auth';
 import CreatePost from '../post/CreatePost';
@@ -17,13 +17,16 @@ class Profile extends Component {
             email: '',
             photo: '',
             isShow: '',
-            posts: []
+            posts: [],
+            isFollowed: false
         };
 
         this.getUser = this.getUser.bind(this);
         this.showModelCreatePost = this.showModelCreatePost.bind(this);
         this.getPosts = this.getPosts.bind(this);
-        this.CreatePost = this.CreatePost.bind(this)
+        this.CreatePost = this.CreatePost.bind(this);
+        this.follow = this.follow.bind(this);
+        this.unfollow = this.unfollow.bind(this);
     }
 
     showModelCreatePost() {
@@ -37,7 +40,11 @@ class Profile extends Component {
             else {
                 console.log(data)
                 const {username, email, photo} = data;
-                this.setState( {username, email, photo} );
+                const isFollowed = data.followers.filter(flw => {
+                    return flw === isAuthenticated().user._id;
+                }).length;
+                console.log(isFollowed)
+                this.setState( {username, email, photo, isFollowed: isFollowed > 0 ? true : false} );
             }
         })
     }
@@ -64,8 +71,33 @@ class Profile extends Component {
 
     }
 
+    follow() {
+        let userId = isAuthenticated().user._id;
+        let token = isAuthenticated().token;
+        let followId = this.props.match.params.userId;
+        addFollow(userId, followId, token)
+        .then( data => {
+            this.setState({
+                isFollowed: true
+            })
+        })
+    }
+    unfollow() {
+        let userId = isAuthenticated().user._id;
+        let token = isAuthenticated().token;
+        let followId = this.props.match.params.userId;
+        unFollow(userId, followId, token)
+        .then( data => {
+            this.setState({
+                isFollowed: false
+            })
+        })
+    }
+
     render() {
-        const { username, email, photo, isShow, posts } = this.state;
+        const { username, email, photo, isShow, posts, isFollowed } = this.state;
+        const { userId } = this.props.match.params;
+        const userLogged = isAuthenticated().user._id
         return (
             <div className="app-outer mb-4" id="app-outer">
 
@@ -85,24 +117,62 @@ class Profile extends Component {
                                 <li className="nav-item active">
                                     <Link className="nav-link" to="">Tweet</Link>
                                 </li>
-                                <li className="nav-item">
-                                    <i 
-                                        className="material-icons nav-link button-show-model-create-post"
-                                        style={{cursor: "pointer"}}
-                                        onClick={() => document.getElementById("model-mask").style.display="flex"}
-                                    >
-                                        create
-                                    </i>    
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link disabled" to="#">Disabled</Link>
-                                </li>
+                                {
+                                    userId === userLogged ? (
+                                        <>
+                                            <li className="nav-item">
+                                                <i 
+                                                    className="material-icons nav-link button-show-model-create-post"
+                                                    style={{cursor: "pointer"}}
+                                                    onClick={() => document.getElementById("model-mask").style.display="flex"}
+                                                >
+                                                    create
+                                                </i>
+                                            </li>
+                                            <li className="nav-item">
+                                                <Link className="nav-link disabled" to="#">Disabled</Link>
+                                            </li>
+                                        </>
+                                    ) : (
+                                        <div className="moveavle-module wlg-size-20 wsm-hide" style={{marginLeft: "auto"}}>
+                                            <li className="nav-item">
+                                                {
+                                                    isFollowed ? (
+                                                        <button className="nav-link btn"
+                                                            style={{
+                                                                "min-width": "105px",
+                                                                "background-color": "#ac002b",
+                                                                "border-color": "#1B95E0",
+                                                                "color": "#fff",
+                                                                "border-radius": "100px"
+                                                            }}
+                                                            onClick={this.unfollow}
+                                                        >
+                                                            Unfollow -
+                                                        </button>
+                                                    ) : 
+                                                    (
+                                                        <button className="nav-link btn"
+                                                            style={{
+                                                                "min-width": "105px",
+                                                                "background-color": "#1B3247",
+                                                                "border-color": "#1B95E0",
+                                                                "color": "#1B95E0",
+                                                                "border-radius": "100px"
+                                                            }}
+                                                            onClick={this.follow}
+                                                        >
+                                                            Follow +
+                                                        </button>
+                                                    )
+                                                }
+                                            </li>
+                                        </div>
+                                    ) 
+                                }
+                                
                             </div>
-                            <div className="moveavle-module wlg-size-20 wsm-hide">
-                                <li className="nav-item">
-                                    <Link className="nav-link disabled" to="#">Disabled</Link>
-                                </li>
-                            </div>
+                            
                         </div>
                     </div>
                 </ul>
@@ -160,3 +230,4 @@ class Profile extends Component {
 }
 
 export default Profile;
+
