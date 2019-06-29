@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { getUser, addFollow, unFollow } from '../controllers/user';
 import { getPostByUser } from '../controllers/post';
 import { isAuthenticated } from '../controllers/auth';
 import CreatePost from '../post/CreatePost';
 import "./custom.css";
 import DropDownEditPost from '../post/DropDownEditPost';
+import ReactPost from '../post/ReactPost';
 const moment = require("moment");
 
 class Profile extends Component {
@@ -18,7 +19,10 @@ class Profile extends Component {
             photo: '',
             isShow: '',
             posts: [],
-            isFollowed: false
+            isFollowed: false,
+            followingArray: [],
+            followersArray: [],
+            redirectToMessenger: false
         };
 
         this.getUser = this.getUser.bind(this);
@@ -27,6 +31,7 @@ class Profile extends Component {
         this.CreatePost = this.CreatePost.bind(this);
         this.follow = this.follow.bind(this);
         this.unfollow = this.unfollow.bind(this);
+        this.redirectToMessenger = this.redirectToMessenger.bind(this);
     }
 
     showModelCreatePost() {
@@ -36,15 +41,22 @@ class Profile extends Component {
     getUser(userId) {
         getUser(userId)
         .then(data => {
+            console.log(data)
             if(data.error) console.log(data.error);
             else {
-                console.log(data)
                 const {username, email, photo} = data;
                 const isFollowed = data.followers.filter(flw => {
-                    return flw === isAuthenticated().user._id;
+                    return flw._id === isAuthenticated().user._id;
                 }).length;
                 console.log(isFollowed)
-                this.setState( {username, email, photo, isFollowed: isFollowed > 0 ? true : false} );
+                this.setState({
+                    username,
+                    email,
+                    photo,
+                    isFollowed: isFollowed > 0 ? true : false,
+                    followersArray: data.followers,
+                    followingArray: data.following
+                });
             }
         })
     }
@@ -52,7 +64,6 @@ class Profile extends Component {
     getPosts(userId) {
         getPostByUser(userId)
         .then( data => {
-            console.log(data)
             if(data.error) {
                 this.setState( {error: data.error} )
             } else {
@@ -94,10 +105,17 @@ class Profile extends Component {
         })
     }
 
+    redirectToMessenger() {
+        this.setState({
+            redirectToMessenger: true
+        });
+    }
+
     render() {
-        const { username, email, photo, isShow, posts, isFollowed } = this.state;
+        const { username, email, photo, isShow, posts, isFollowed, followersArray, followingArray, redirectToMessenger } = this.state;
         const { userId } = this.props.match.params;
-        const userLogged = isAuthenticated().user._id
+        const userLogged = isAuthenticated().user._id;
+        if(redirectToMessenger) return <Redirect to="/messenger"></Redirect>;
         return (
             <div className="app-outer mb-4" id="app-outer">
 
@@ -109,7 +127,7 @@ class Profile extends Component {
                             <div className="profile-avatar wlg-size-20 wsm-size-40 mr-4">
                                 <li className="nav-item">
                                     <img className="profile-avatart-image profile-thumb profile-thumb-lg border-r-half" 
-                                        src={photo} alt="user-image"
+                                        src={`${photo}?${new Date().getTime()}`} alt="user-image"
                                     />
                                 </li>
                             </div>
@@ -130,7 +148,12 @@ class Profile extends Component {
                                                 </i>
                                             </li>
                                             <li className="nav-item">
-                                                <Link className="nav-link disabled" to="#">Disabled</Link>
+                                                <Link
+                                                    className="nav-link" to="#" style={{color: "white"}}
+                                                    onClick={this.redirectToMessenger}
+                                                >
+                                                        <i class="material-icons">near_me</i>
+                                                </Link>
                                             </li>
                                         </>
                                     ) : (
@@ -181,7 +204,33 @@ class Profile extends Component {
                         <div className="row">
                             <div className="profile-sidebar wlg-size-20 wsm-size-40 mr-4">
                                 <div className="profile-header-card">
-                                    card
+                                    
+                                    <ul className="profile-follow p-2">
+                                        <p className="text-muted" style={{"font-family": "serif"}}>Following</p>
+                                        {
+                                            followingArray.map(fl => {
+                                                return (
+                                                    <li className="follow-item mb-2">
+                                                        <img src={`${fl.photo}`} alt="user-image" className="border-r-half mr-3 profile-thumb profile-thumb-sm"/>
+                                                        <Link to={`/user/${fl._id}`} style={{fontSize: "14px"}}>{fl.username}</Link>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                        <hr style={{backgroundColor: "#38444d", marginTop: "20px"}}/>
+                                        <p className="text-muted" style={{"font-family": "serif"}}>Followers</p>
+                                        {
+                                            followersArray.map(fl => {
+                                                return (
+                                                    <li className="follow-item mb-2">
+                                                        <img src={`${fl.photo}`} alt="user-image" className="border-r-half mr-3 profile-thumb profile-thumb-sm"/>
+                                                        <Link to={`/user/${fl._id}`} style={{fontSize: "14px"}}>{fl.username}</Link>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
+                                    
                                 </div>
                             </div>
                             
@@ -201,18 +250,7 @@ class Profile extends Component {
                                                             {post.body}
                                                         </div>
                                                         {post.photo && <img className="card-img-top border-r-liti" src={post.photo} alt="Card image cap" />}
-                                                        <div className="card-react mt-4">
-                                                            <div className="react-like">
-                                                                <button className="react-like-toggle" type="button" data-id={post._id}>
-                                                                    <span className="icon-like">
-                                                                        <i className="material-icons">favorite_border</i>
-                                                                    </span>
-                                                                    <span className="count-like">
-                                                                        {post.likes.length}
-                                                                    </span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                        <ReactPost postId={post._id} likes={post.likes} comments={post.comments} />
                                                     </div>
                                                 </div>
                                             </div>

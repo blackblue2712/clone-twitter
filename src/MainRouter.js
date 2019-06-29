@@ -10,6 +10,8 @@ import Profile from './user/Profile';
 import EditProfile from './user/EditProfile';
 import EditPost from './post/EditPost';
 import SinglePost from './post/SinglePost';
+import ForgotPassword from './user/ForgotPassword';
+import ResetPassword from './user/ResetPassword';
 const MainRouter = () => (
     <div className="App">
         <Menu />
@@ -18,6 +20,8 @@ const MainRouter = () => (
             <Route exact path="/" component={Home}></Route>
             <Route exact path="/signin" component={Signin}></Route>
             <Route exact path="/signup" component={Signup}></Route>
+            <Route exact path="/forgot-password" component={ForgotPassword}></Route>
+            <Route exact path="/reset-password/:resetPasswordToken" component={ResetPassword}></Route>
 
             <Route exact path="/user/:userId" component={Profile}></Route>
             <Route exact path="/user/edit/:userId" component={EditProfile}></Route>

@@ -68,3 +68,31 @@ export const signout = async (callback) => {
 
     
 }
+
+export const forgotPassword = (email) => {
+    console.log(email)
+    return fetch(`${process.env.REACT_APP_API_URL}/forgot-password`, {
+        method: "PUT",
+        headers: {
+            Accept: "Application/json",
+            "Content-Type": "Application/json",
+        },
+        body: JSON.stringify({email})
+    })
+    .then( res => res.json())
+    .catch( err => console.log("ERROR FORGOT PASSWORD"))
+}
+
+export const resetPassword = async (password, resetPasswordLink) => {
+    console.log(password, resetPasswordLink)
+    return await fetch(`${process.env.REACT_APP_API_URL}/reset-password`, {
+        method: "PUT",
+        headers: {
+            Accept: "Application/json",
+            "Content-Type": "Application/json"
+        },
+        body: JSON.stringify( {password, resetPasswordLink} )
+    })
+    .then( res => res.json() )
+    .catch( err => console.log("ERROR RESET PASSWORD") )
+}

@@ -79,6 +79,9 @@ class Signin extends Component {
                                 
                         </div>
                         <button type="submit" className="btn btn-primary btn-raised btn-sm">Submit</button>
+                        <p className="mt-3">
+                            <a href="/forgot-password" className="text-muted small text-primary">Forgot password?</a>
+                        </p>
                     </form>
                 </div>
             </>

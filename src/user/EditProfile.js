@@ -3,6 +3,7 @@ import "./custom.css";
 import { getUser, updateUser } from '../controllers/user';
 import { isAuthenticated } from '../controllers/auth';
 import Loading from '../components/Loading';
+import { Link } from "react-router-dom";
 
 class EditProfile extends Component {
     constructor() {
@@ -126,6 +127,7 @@ class EditProfile extends Component {
 
     render() {
         const { username, password, photo, loading } = this.state;
+        const userId = isAuthenticated().user._id;
         return (
             <>
             {loading && <Loading />}
@@ -158,7 +160,7 @@ class EditProfile extends Component {
                                     onChange={this.handleChange('photo')}
                                 />
                                 <button type="submit" className="btn btn-raised btn-sm btn-primary mr-4">Save change</button>
-                                <button type="button" className="btn btn-raised btn-sm">Cancel</button>
+                                <Link to={`/user/${userId}`}><button type="button" className="btn btn-raised btn-sm">Cancel</button></Link>
                             </form>
                         </div>
                     </fieldset>

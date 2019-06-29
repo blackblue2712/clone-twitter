@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import { isAuthenticated } from '../controllers/auth';
 import Loading from '../components/Loading';
 import { getPost, updatePost } from '../controllers/post';
@@ -84,6 +85,7 @@ class EditPost extends Component {
 
     render() {
         const { loading, body, photo } = this.state;
+        const userId = isAuthenticated().user._id;
         return (
             <>
             {loading && <Loading />}
@@ -124,7 +126,7 @@ class EditPost extends Component {
                                    onChange={this.preview_image}
                                 />
                                 <button type="submit" className="btn btn-raised btn-sm btn-primary mr-4">Save change</button>
-                                <button type="button" className="btn btn-raised btn-sm">Cancel</button>
+                                <Link to={`/user/${userId}`}><button type="button" className="btn btn-raised btn-sm">Cancel</button></Link>
                             </form>
                         </div>
                     </fieldset>
